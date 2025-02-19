@@ -16,7 +16,7 @@ export default class NavigationCommandsReplacer {
 
 	public replace() {
 		if (this.isReplacing()) {
-			this.restore();
+			this.doRestore();
 		}
 
 		// @ts-ignore
@@ -33,13 +33,17 @@ export default class NavigationCommandsReplacer {
 
 	public restore() {
 		if (this.isReplacing()) {
-			// @ts-ignore
-			const prevCommand = this.app?.commands?.commands?.['daily-notes:goto-prev'] as Command;
-			// @ts-ignore
-			const nextCommand = this.app?.commands?.commands?.['daily-notes:goto-next'] as Command;
-			prevCommand.checkCallback = this.originalPrevDailyNoteCommandCheckCallback;
-			nextCommand.checkCallback = this.originalNextDailyNoteCommandCheckCallback;
+			this.doRestore();
 		}
+	}
+
+	private doRestore() {
+		// @ts-ignore
+		const prevCommand = this.app?.commands?.commands?.['daily-notes:goto-prev'] as Command;
+		// @ts-ignore
+		const nextCommand = this.app?.commands?.commands?.['daily-notes:goto-next'] as Command;
+		prevCommand.checkCallback = this.originalPrevDailyNoteCommandCheckCallback;
+		nextCommand.checkCallback = this.originalNextDailyNoteCommandCheckCallback;
 	}
 
 	private doExecuteCheckCallback(checking: boolean, previous: boolean): boolean|void {
