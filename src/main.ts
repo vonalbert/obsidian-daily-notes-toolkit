@@ -1,5 +1,6 @@
 import {Plugin} from 'obsidian';
 import {appHasDailyNotesPluginLoaded} from "obsidian-daily-notes-interface";
+import createTodayNoteIfNotExists from "./Factory/createTodayNoteIfNotExists";
 import NavigationCommandsReplacer from "./Navigation/NavigationCommandsReplacer";
 import DailyNotesToolkitPluginSettingsTab from "./Settings/DailyNotesToolkitPluginSettingsTab";
 import {DailyNotesToolkitSettings, DEFAULT_SETTINGS} from "./Settings/DailyNotesToolkitSettings";
@@ -19,6 +20,10 @@ export default class DailyNotesToolkitPlugin extends Plugin {
 
 		if (this.settings.replaceOriginalDailyNoteNavigationCommands) {
 			this.navigationCommandsReplacer.replace();
+		}
+
+		if (this.settings.silentlyCreateDailyNoteFile) {
+			this.app.workspace.onLayoutReady(() => createTodayNoteIfNotExists());
 		}
 
 		this.addSettingTab(new DailyNotesToolkitPluginSettingsTab(this.app, this));

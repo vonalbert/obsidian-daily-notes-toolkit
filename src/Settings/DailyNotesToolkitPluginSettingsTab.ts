@@ -24,5 +24,16 @@ export default class DailyNotesToolkitPluginSettingsTab extends PluginSettingTab
 					await this.plugin.saveSettings();
 				});
 			});
+
+		new Setting(containerEl)
+			.setName('Ensure a daily note exists for the current day')
+			.setDesc('Core daily-notes plugin only offer the possibility to open a daily note on EVERY application startup. With this option you can create the daily-note without opening the file')
+			.addToggle(toggle => {
+				toggle.setValue(this.plugin.settings.silentlyCreateDailyNoteFile);
+				toggle.onChange(async (value) => {
+					this.plugin.settings.silentlyCreateDailyNoteFile = value;
+					await this.plugin.saveSettings();
+				});
+			});
 	}
 }
