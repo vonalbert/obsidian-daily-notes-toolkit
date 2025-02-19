@@ -1,11 +1,10 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
+	"id": "daily-notes-toolkit",
+	"name": "Daily Notes Toolkit",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"description": "Various extensions for daily notes",
+	"author": "Vonalbert",
+	"authorUrl": "https://github.com/vonalbert",
 	"isDesktopOnly": false
 }
