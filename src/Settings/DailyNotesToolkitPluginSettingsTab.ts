@@ -46,6 +46,7 @@ export default class DailyNotesToolkitPluginSettingsTab extends PluginSettingTab
 				toggle.onChange(async (value) => {
 					this.plugin.settings.shouldFormatDailyNoteInlineTitle = value;
 					await this.plugin.saveSettings();
+					this.display();
 				});
 			});
 
