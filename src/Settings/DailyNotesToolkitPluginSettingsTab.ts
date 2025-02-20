@@ -1,5 +1,7 @@
 import {App, PluginSettingTab, Setting} from "obsidian";
+import InlineTitleFormatter from "../InlineTitle/InlineTitleFormatter";
 import DailyNotesToolkitPlugin from "../main";
+import {DEFAULT_SETTINGS} from "./DailyNotesToolkitSettings";
 
 export default class DailyNotesToolkitPluginSettingsTab extends PluginSettingTab {
 	plugin: DailyNotesToolkitPlugin;
@@ -35,5 +37,30 @@ export default class DailyNotesToolkitPluginSettingsTab extends PluginSettingTab
 					await this.plugin.saveSettings();
 				});
 			});
+
+		new Setting(containerEl)
+			.setName('Format inline title')
+			.setDesc('Whether should replace daily note\'s inline title with a formatted version')
+			.addToggle(toggle => {
+				toggle.setValue(this.plugin.settings.shouldFormatDailyNoteInlineTitle);
+				toggle.onChange(async (value) => {
+					this.plugin.settings.shouldFormatDailyNoteInlineTitle = value;
+					await this.plugin.saveSettings();
+				});
+			});
+
+		if (this.plugin.settings.shouldFormatDailyNoteInlineTitle) {
+			new Setting(containerEl)
+				.setName('Daily note inline title format')
+				.setDesc('Moment format of the inline title')
+				.addText(text => {
+					text.setValue(this.plugin.settings.dailyNoteInlineTitleDateFormat);
+					text.setPlaceholder(InlineTitleFormatter.FALLBACK_FORMAT)
+					text.onChange(async (value) => {
+						this.plugin.settings.dailyNoteInlineTitleDateFormat = value;
+						await this.plugin.saveSettings();
+					});
+				});
+		}
 	}
 }
