@@ -1,5 +1,6 @@
-import {Plugin} from 'obsidian';
+import {Notice, Plugin} from 'obsidian';
 import {appHasDailyNotesPluginLoaded} from "obsidian-daily-notes-interface";
+import FooterEmbedsRenderer from "./DailyNoteFooter/FooterEmbedsRenderer";
 import createTodayNoteIfNotExists from "./Factory/createTodayNoteIfNotExists";
 import InlineTitleFormatter from "./InlineTitle/InlineTitleFormatter";
 import NavigationCommandsReplacer from "./Navigation/NavigationCommandsReplacer";
@@ -13,26 +14,30 @@ export default class DailyNotesToolkitPlugin extends Plugin {
 		DEFAULT_SETTINGS.shouldFormatDailyNoteInlineTitle,
 		DEFAULT_SETTINGS.dailyNoteInlineTitleDateFormat,
 	);
+	private footerQueriesRenderer = new FooterEmbedsRenderer(this.app);
 
 	async onload() {
 		await this.loadSettings();
 
 		if (!appHasDailyNotesPluginLoaded()) {
-			console.error(`Daily Notes Toolkit: this plugin requires core daily-notes plugin to be enabled.`)
+			new Notice(`obsidian-daily-notes-toolkit plugin requires core daily-notes plugin to be enabled to work.`)
 			return;
 		}
 
 		this.initComponentsFromSettings();
 
-		if (this.settings.silentlyCreateDailyNoteFile) {
-			this.app.workspace.onLayoutReady(() => createTodayNoteIfNotExists());
-		}
+		this.app.workspace.onLayoutReady(() => {
+			if (this.settings.silentlyCreateDailyNoteFile) {
+				createTodayNoteIfNotExists()
+			}
 
-		this.registerEvent(
-			this.app.workspace.on('layout-change', () => {
-				this.app.workspace.getLeavesOfType("markdown").forEach(leaf => this.inlineTitleFormatter.formatInlineTitle(leaf));
-			})
-		);
+			this.rerenderComponents();
+			this.registerEvent(
+				this.app.workspace.on('layout-change', () => {
+					this.rerenderComponents();
+				})
+			);
+		});
 
 		this.addSettingTab(new DailyNotesToolkitPluginSettingsTab(this.app, this));
 	}
@@ -49,6 +54,7 @@ export default class DailyNotesToolkitPlugin extends Plugin {
 		await this.saveData(this.settings);
 
 		this.initComponentsFromSettings();
+		this.rerenderComponents();
 	}
 
 	private initComponentsFromSettings() {
@@ -60,5 +66,14 @@ export default class DailyNotesToolkitPlugin extends Plugin {
 
 		this.inlineTitleFormatter.enabled = this.settings.shouldFormatDailyNoteInlineTitle;
 		this.inlineTitleFormatter.momentFormat = this.settings.dailyNoteInlineTitleDateFormat;
+
+		this.footerQueriesRenderer.setEmbeds(this.settings.dailyNotesEmbeds);
+	}
+
+	private rerenderComponents() {
+		this.app.workspace.getLeavesOfType("markdown").forEach(leaf => {
+			this.inlineTitleFormatter.formatInlineTitle(leaf);
+			this.footerQueriesRenderer.renderFooterEmbedsInLeaf(leaf);
+		});
 	}
 }

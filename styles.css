@@ -1,3 +1,30 @@
 .dnt-formatted-inline-title {
 	text-transform: capitalize;
 }
+
+.dnt-footer-embeds {
+	padding: var(--size-4-3) 0 0 0;
+	border-top: 1px solid var(--background-modifier-border);
+	margin: 3em 0;
+
+	&:empty {
+		display: none;
+	}
+
+	.dnt-footer-embed-title {
+		padding: var(--size-4-1) var(--size-4-2);
+		display: inline-block;
+		border-radius: var(--radius-s);
+		cursor: pointer;
+
+		&:hover {
+			color: var(--nav-item-color-hover);
+			background-color: var(--nav-item-background-hover);
+			font-weight: var(--nav-item-weight-hover);
+		}
+	}
+
+	.dnt-footer-embed-content {
+		padding: var(--size-4-1) 1px var(--size-4-4);
+	}
+}
