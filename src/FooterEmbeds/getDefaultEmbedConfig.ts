@@ -7,5 +7,6 @@ export default function getDefaultEmbedConfig(): EmbedConfig {
 		pastDisplayMode: "show",
 		presentDisplayMode: "show",
 		futureDisplayMode: "show",
+		useDailyNoteSourcePath: false,
 	}
 }

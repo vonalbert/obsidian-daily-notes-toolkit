@@ -6,6 +6,7 @@ export interface EmbedConfig {
 	pastDisplayMode: EmbedDisplayMode,
 	presentDisplayMode: EmbedDisplayMode,
 	futureDisplayMode: EmbedDisplayMode,
+	useDailyNoteSourcePath?: boolean,
 }
 
 export interface EmbedHTMLElementLayout {

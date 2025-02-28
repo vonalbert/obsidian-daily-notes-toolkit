@@ -1,4 +1,4 @@
-import {EmbedConfig} from "../DailyNoteFooter/types";
+import {EmbedConfig} from "../FooterEmbeds/types";
 
 export interface DailyNotesToolkitSettings {
 	replaceOriginalDailyNoteNavigationCommands: boolean;

@@ -1,8 +1,8 @@
-import {App, Modal, PluginSettingTab, Setting} from "obsidian";
-import getDefaultEmbedConfig from "../DailyNoteFooter/getDefaultEmbedConfig";
-import {EmbedConfig, EmbedDisplayMode} from "../DailyNoteFooter/types";
+import {App, PluginSettingTab, Setting} from "obsidian";
+import getDefaultEmbedConfig from "../FooterEmbeds/getDefaultEmbedConfig";
 import InlineTitleFormatter from "../InlineTitle/InlineTitleFormatter";
 import DailyNotesToolkitPlugin from "../main";
+import FooterEmbedConfigSettingModal from "./FooterEmbedConfigSettingModal";
 
 export default class DailyNotesToolkitPluginSettingsTab extends PluginSettingTab {
 	plugin: DailyNotesToolkitPlugin;
@@ -78,7 +78,7 @@ export default class DailyNotesToolkitPluginSettingsTab extends PluginSettingTab
 					const index = this.plugin.settings.dailyNotesEmbeds.length - 1;
 					const embedConfig = this.plugin.settings.dailyNotesEmbeds[index];
 
-					const modal = new EmbedDisplayModeModal(this.app, this.plugin, embedConfig, index, () => {
+					const modal = new FooterEmbedConfigSettingModal(this.app, this.plugin, embedConfig, index, () => {
 						this.display();
 					});
 
@@ -94,7 +94,7 @@ export default class DailyNotesToolkitPluginSettingsTab extends PluginSettingTab
 				.addExtraButton(cb => {
 					cb.setIcon('edit');
 					cb.onClick(() => {
-						const modal = new EmbedDisplayModeModal(this.app, this.plugin, embedConfig, index, () => {
+						const modal = new FooterEmbedConfigSettingModal(this.app, this.plugin, embedConfig, index, () => {
 							this.display();
 						});
 
@@ -133,77 +133,5 @@ export default class DailyNotesToolkitPluginSettingsTab extends PluginSettingTab
 				})
 			;
 		});
-	}
-}
-
-class EmbedDisplayModeModal extends Modal {
-	constructor(app: App, private readonly plugin: DailyNotesToolkitPlugin, embedConfig: EmbedConfig, index: number, private readonly onCloseCallback: () => any) {
-		super(app);
-
-		this.titleEl.textContent = `Edit embed: ${embedConfig.title}`;
-
-		new Setting(this.contentEl)
-			.setName('Title')
-			.addText(text => {
-				text.setValue(embedConfig.title);
-				text.onChange(async (value) => {
-					this.plugin.settings.dailyNotesEmbeds[index].title = value;
-					await this.plugin.saveSettings();
-				});
-			});
-
-		new Setting(this.contentEl)
-			.setName('File path')
-			.addText(text => {
-				text.setPlaceholder('File');
-				text.setValue(embedConfig.filePath);
-				text.onChange(async (value) => {
-					this.plugin.settings.dailyNotesEmbeds[index].filePath = value;
-					await this.plugin.saveSettings();
-				});
-			});
-
-		new Setting(this.contentEl)
-			.setName('On past daily notes')
-			.addDropdown(dropdown => {
-				dropdown.addOption('show', 'Show');
-				dropdown.addOption('show-collapsed', 'Collapse');
-				dropdown.addOption('hide', 'Hide');
-				dropdown.setValue(embedConfig.pastDisplayMode);
-				dropdown.onChange(async (value: EmbedDisplayMode) => {
-					this.plugin.settings.dailyNotesEmbeds[index].pastDisplayMode = value;
-					await this.plugin.saveSettings();
-				});
-			});
-
-		new Setting(this.contentEl)
-			.setName('On today daily note')
-			.addDropdown(dropdown => {
-				dropdown.addOption('show', 'Show');
-				dropdown.addOption('show-collapsed', 'Collapse');
-				dropdown.addOption('hide', 'Hide');
-				dropdown.setValue(embedConfig.presentDisplayMode);
-				dropdown.onChange(async (value: EmbedDisplayMode) => {
-					this.plugin.settings.dailyNotesEmbeds[index].presentDisplayMode = value;
-					await this.plugin.saveSettings();
-				});
-			});
-
-		new Setting(this.contentEl)
-			.setName('On future daily notes')
-			.addDropdown(dropdown => {
-				dropdown.addOption('show', 'Show');
-				dropdown.addOption('show-collapsed', 'Collapse');
-				dropdown.addOption('hide', 'Hide');
-				dropdown.setValue(embedConfig.futureDisplayMode);
-				dropdown.onChange(async (value: EmbedDisplayMode) => {
-					this.plugin.settings.dailyNotesEmbeds[index].futureDisplayMode = value;
-					await this.plugin.saveSettings();
-				});
-			});
-	}
-
-	public onClose() {
-		this.onCloseCallback();
 	}
 }
