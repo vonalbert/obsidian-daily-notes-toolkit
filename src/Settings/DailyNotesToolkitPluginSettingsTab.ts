@@ -137,7 +137,7 @@ export default class DailyNotesToolkitPluginSettingsTab extends PluginSettingTab
 }
 
 class EmbedDisplayModeModal extends Modal {
-	constructor(app: App, private readonly plugin: DailyNotesToolkitPlugin, embedConfig: EmbedConfig, index: number, private readonly onCloseCallback) {
+	constructor(app: App, private readonly plugin: DailyNotesToolkitPlugin, embedConfig: EmbedConfig, index: number, private readonly onCloseCallback: () => any) {
 		super(app);
 
 		this.titleEl.textContent = `Edit embed: ${embedConfig.title}`;

@@ -13,7 +13,7 @@ export function removeEmbedsFromView(view: FileView) {
 
 export function removeEmbedsInsideElement(element: HTMLElement) {
 	element.querySelectorAll('.dnt-footer-embeds')
-		.forEach(element => element.parentElement.removeChild(element));
+		.forEach(element => element.parentElement?.removeChild(element));
 }
 
 export function ensureEmptyEmbedsContainerExistsInsideElement(element: HTMLElement): HTMLElement {
@@ -28,9 +28,7 @@ export function ensureEmptyEmbedsContainerExistsInsideElement(element: HTMLEleme
 
 	// Force the container to stay before embedded-backlinks div if applicable
 	const embeddedBacklinks = element.find('.embedded-backlinks');
-	if (embeddedBacklinks) {
-		embeddedBacklinks.parentElement.insertBefore(container, embeddedBacklinks);
-	}
+	embeddedBacklinks?.parentElement?.insertBefore(container, embeddedBacklinks);
 
 	return container;
 }
