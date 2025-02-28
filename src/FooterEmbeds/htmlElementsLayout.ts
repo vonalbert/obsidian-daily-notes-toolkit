@@ -49,14 +49,18 @@ export function createSingleEmbedLayout(collapsedByDefault: boolean): EmbedHTMLE
 	container.append(content);
 
 	title.addEventListener('click', () => {
-		const embedContent = document.querySelector(`#${embedId} > .dnt-footer-embed-content`);
-		if (embedContent instanceof HTMLElement) {
-			embedContent.style.display = embedContent.style.display === 'none' ? '' : 'none';
+		const embedContainer = document.getElementById(embedId);
+		if (embedContainer instanceof HTMLElement) {
+			if (embedContainer.classList.contains('dnt-footer-embed-collapsed')) {
+				embedContainer.classList.remove('dnt-footer-embed-collapsed');
+			} else {
+				embedContainer.classList.add('dnt-footer-embed-collapsed');
+			}
 		}
 	});
 
 	if (collapsedByDefault) {
-		content.style.display = 'none';
+		container.classList.add('dnt-footer-embed-collapsed');
 	}
 
 	return {
