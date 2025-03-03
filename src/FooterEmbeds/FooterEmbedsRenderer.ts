@@ -80,7 +80,9 @@ export default class FooterEmbedsRenderer {
 			container.append(embedLayout.container);
 
 			const content = await getEmbeddedContent(dailyNoteDate, embed);
-			await MarkdownRenderer.render(this.app, content, embedLayout.content, view.file.path, view);
+			const sourcePath = embed?.useDailyNoteSourcePath ? view.file.path : embed.filePath;
+
+			await MarkdownRenderer.render(this.app, content, embedLayout.content, sourcePath, view);
 		}
 	}
 }

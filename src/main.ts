@@ -1,6 +1,6 @@
 import {Notice, Plugin} from 'obsidian';
 import {appHasDailyNotesPluginLoaded} from "obsidian-daily-notes-interface";
-import FooterEmbedsRenderer from "./DailyNoteFooter/FooterEmbedsRenderer";
+import FooterEmbedsRenderer from "./FooterEmbeds/FooterEmbedsRenderer";
 import createTodayNoteIfNotExists from "./Factory/createTodayNoteIfNotExists";
 import InlineTitleFormatter from "./InlineTitle/InlineTitleFormatter";
 import NavigationCommandsReplacer from "./Navigation/NavigationCommandsReplacer";
