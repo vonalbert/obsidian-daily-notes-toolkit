@@ -11,9 +11,3 @@ Build the production version
 ```shell
 npm run build
 ```
-
-Prepare a release
-
-```shell
-npm run release
-```
