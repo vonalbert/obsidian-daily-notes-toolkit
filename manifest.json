@@ -1,7 +1,7 @@
 {
 	"id": "daily-notes-toolkit",
 	"name": "Daily notes toolkit",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"minAppVersion": "0.15.0",
 	"description": "Various extensions for daily notes",
 	"author": "Vonalbert",
